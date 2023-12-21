@@ -1,18 +1,28 @@
-<!DOCTYPE html>
-<html lang="ja">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance</title>
-    <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/attendance.css') }}" />
-</head>
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/index.css') }}">
+@endsection
 
-<body>
-    <main>
-        <p>テストb</p>
-    </main>
-</body>
+@section('content')
+<div class="attendance__alert">
+    さんお疲れ様です！
+</div>
 
-</html>
+<div class="attendance__content">
+    <div class="attendance__panel">
+        <form class="attendance__button">
+            <button class="attendance__button-submit" type="submit">勤務開始</button>
+        </form>
+        <form class="attendance__button">
+            <button class="attendance__button-submit" type="submit">勤務終了</button>
+        </form>
+        <form class="attendance__button">
+            <button class="attendance__button-submit" type="submit">休憩開始</button>
+        </form>
+        <form class="attendance__button">
+            <button class="attendance__button-submit" type="submit">休憩終了</button>
+        </form>
+    </div>
+</div>
+@endsection
