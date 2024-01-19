@@ -20,3 +20,5 @@ Route::get('/', [AttendanceController::class, 'create']);
 Route::middleware('auth')->group(function () {
     Route::get('/', [AuthController::class, 'index']);
 });
+Route::get('/attendance/create', [AttendanceController::class, 'create']);
+Route::post('/attendance/start', [AttendanceController::class, 'attendanceStart']);
