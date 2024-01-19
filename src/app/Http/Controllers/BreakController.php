@@ -6,14 +6,14 @@ use App\Models\attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class AttendanceController extends Controller
+class BreakController extends Controller
 {
-    public function create()
+    public function index()
     {
         return view('attendance');
     }
 
-    public function attendanceStart()
+    public function breakStart()
     {
         DB::table('attendances')->insert([
             'user_id' => '名前',
@@ -21,12 +21,10 @@ class AttendanceController extends Controller
             'updated_at' => now()
         ]);
 
-        // 他の処理を追加...
-
-        return view('attendance')->with('message', '出勤が登録されました');
+        return view('attendance')->with('message', '休憩が開始しました');
     }
 
-    public function attendanceEnd()
+    public function breakEnd()
     {
         DB::table('attendances')->insert([
             'user_id' => '名前',
@@ -34,8 +32,7 @@ class AttendanceController extends Controller
             'updated_at' => now()
         ]);
 
-        return view('attendance')->with('message', '退勤が登録されました');
+        return view('attendance')->with('message', '休憩が終了しました');
     }
+
 }
-
-
