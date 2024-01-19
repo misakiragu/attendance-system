@@ -30,8 +30,9 @@ class AttendanceController extends Controller
         ]);
 
         $userName = Auth::user()->name;
+        $message = '出勤が登録されました';
 
-        return view('attendance', compact('userName'))->with('message', '出勤が登録されました');
+        return view('attendance', compact('userName', 'message'));
     }
 
     public function attendanceEnd()
@@ -46,8 +47,9 @@ class AttendanceController extends Controller
             ->update(['end_time' => $endTime, 'updated_at' => now()]);
 
         $userName = Auth::user()->name;
+        $message = '退勤が登録されました';
 
-        return view('attendance', compact('userName'))->with('message', '退勤が登録されました');
+        return view('attendance', compact('userName', 'message'));
     }
 }
 

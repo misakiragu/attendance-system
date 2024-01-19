@@ -10,7 +10,7 @@
 </div>
 
 <div class="attendance__content">
-    <p class="message">{{ $message }}</p>
+    <p class="message">{{ $message ?? '' }}</p>
 </div>
 
 <div class="attendance__content">
