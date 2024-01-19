@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
@@ -13,28 +15,39 @@ class AttendanceController extends Controller
         return view('attendance');
     }
 
-    public function attendanceStart()
+    public function attendanceStart(Request $request)
     {
+        $userId = Auth::id();
+        $date = now()->toDateString();
+        $startTime = now()->toTimeString();
+        
         DB::table('attendances')->insert([
-            'user_id' => '名前',
+            'user_id' => $userId,
+            'date' => $date,
+            'start_time' => $startTime,
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
-        // 他の処理を追加...
+        $userName = Auth::user()->name;
 
-        return view('attendance')->with('message', '出勤が登録されました');
+        return view('attendance', compact('userName'))->with('message', '出勤が登録されました');
     }
 
     public function attendanceEnd()
     {
-        DB::table('attendances')->insert([
-            'user_id' => '名前',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+        $userId = Auth::id();
+        $date = now()->toDateString();
+        $endTime = now()->toTimeString();
+        
+        DB::table('attendances')
+        ->where('user_id', $userId)
+            ->where('date', $date)
+            ->update(['end_time' => $endTime, 'updated_at' => now()]);
 
-        return view('attendance')->with('message', '退勤が登録されました');
+        $userName = Auth::user()->name;
+
+        return view('attendance', compact('userName'))->with('message', '退勤が登録されました');
     }
 }
 

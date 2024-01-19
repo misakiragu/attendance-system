@@ -6,7 +6,11 @@
 
 @section('content')
 <div class="attendance__alert">
-    さんお疲れ様です！
+    {{ $userName }}さんお疲れ様です！
+</div>
+
+<div class="attendance__content">
+    <p class="message">{{ $message }}</p>
 </div>
 
 <div class="attendance__content">
