@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class BreakController extends Controller
 {
@@ -13,26 +14,40 @@ class BreakController extends Controller
         return view('attendance');
     }
 
-    public function breakStart()
+    public function breakStart(Request $request)
     {
-        DB::table('attendances')->insert([
-            'user_id' => '名前',
+        $attendanceId = Auth::id();
+        $startTime = now()->toTimeString();
+
+        DB::table('breaks')->insert([
+            'attendance_id' => $attendanceId,
+            'start_time' => $startTime,
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
-        return view('attendance')->with('message', '休憩が開始しました');
+        $userName = Auth::user()->name;
+        $message = '休憩が開始されました';
+
+        return view('attendance', compact('userName', 'message'));
     }
 
-    public function breakEnd()
+    public function breakEnd(Request $request)
     {
-        DB::table('attendances')->insert([
-            'user_id' => '名前',
+        $attendanceId = Auth::id();
+        $endTime = now()->toTimeString();
+
+        DB::table('breaks')->insert([
+            'attendance_id' => $attendanceId,
+            'end_time' => $endTime,
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
-        return view('attendance')->with('message', '休憩が終了しました');
+        $userName = Auth::user()->name;
+        $message = '休憩が終了しました';
+
+        return view('attendance', compact('userName', 'message'));
     }
 
 }
