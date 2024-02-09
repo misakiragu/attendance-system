@@ -6,11 +6,27 @@
 
 @section('content')
 <div class="attendance__content">
-    <p>{{ $date ?? '未設定' }}</p>
-    <p>名前: {{ $userName ?? 'Guest' }}</p>
-    <p>勤務開始: {{ $startTime ?? '未設定' }}</p>
-    <p>勤務終了: {{ $endTime ?? '未設定' }}</p>
-    <p>休憩時間: </p>
-    <p>勤務時間: </p>
+    <table class="date-table__inner">
+        @foreach ($results as $result)
+        <tr class="date-table__row">
+            <td class="date-table__item">
+                {{ $result->name }}
+            </td>
+        </tr>
+        @endforeach
+        @foreach ($attendances as $attendance)
+        <tr class="date-table__row">
+            <td class="date-table__item">
+                {{ $startTime }}
+            </td>
+            <td class="date-table__item">
+                {{ $endTime }}
+            </td>
+            <td class="date-table__item">
+                {{ $duration->format('%H:%I:%S') }}
+            </td>
+        </tr>
+        @endforeach
+    </table>
 </div>
 @endsection

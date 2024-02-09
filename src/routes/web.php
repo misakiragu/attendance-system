@@ -5,6 +5,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BreakController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,3 +40,9 @@ Route::post('/attendance/end', [AttendanceController::class, 'attendanceEnd']);
 Route::post('/break/start', [BreakController::class, 'breakStart']);
 
 Route::post('/break/end', [BreakController::class, 'breakEnd']);
+
+Route::get('/date', function () {
+    return view('date');
+});
+
+Route::get('/date', [DateController::class, 'getWorkData']);
