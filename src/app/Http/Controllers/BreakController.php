@@ -21,7 +21,7 @@ class BreakController extends Controller
 
         DB::table('breaks')->insert([
             'attendance_id' => $attendanceId,
-            'start_time' => $startTime,
+            'break_start_time' => $startTime,
             'created_at' => now(),
             'updated_at' => now()
         ]);
@@ -39,7 +39,7 @@ class BreakController extends Controller
 
         DB::table('breaks')->insert([
             'attendance_id' => $attendanceId,
-            'end_time' => $endTime,
+            'break_end_time' => $endTime,
             'created_at' => now(),
             'updated_at' => now()
         ]);

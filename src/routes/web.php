@@ -46,3 +46,5 @@ Route::get('/date', function () {
 });
 
 Route::get('/date', [DateController::class, 'getWorkData']);
+
+Route::get('/workdata/{date}', [DateController::class, 'getWorkData']);

@@ -7,23 +7,26 @@
 @section('content')
 <div class="attendance__content">
     <table class="date-table__inner">
-        @foreach ($results as $result)
-        <tr class="date-table__row">
-            <td class="date-table__item">
-                {{ $result->name }}
-            </td>
+        <tr>
+            <th>名前</th>
+            <th>勤務開始</th>
+            <th>勤務終了</th>
+            <th>休憩時間</th>
+            <th>勤務時間</th>
         </tr>
-        @endforeach
-        @foreach ($attendances as $attendance)
-        <tr class="date-table__row">
+        @foreach ($results as $results)
+        <tr>
             <td class="date-table__item">
-                {{ $startTime }}
+                {{ $results->name }}
             </td>
             <td class="date-table__item">
-                {{ $endTime }}
+                {{ $results->start_time }}
             </td>
             <td class="date-table__item">
-                {{ $duration->format('%H:%I:%S') }}
+                {{ $results->end_time }}
+            </td>
+            <td class="date-table__item">
+                {{ $results->total_break_time }}
             </td>
         </tr>
         @endforeach
