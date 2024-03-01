@@ -20,7 +20,7 @@ class AttendanceController extends Controller
         $userId = Auth::id();
         $date = now()->toDateString();
         $startTime = now()->toTimeString();
-        
+
         DB::table('attendances')->insert([
             'user_id' => $userId,
             'date' => $date,
@@ -39,12 +39,18 @@ class AttendanceController extends Controller
     {
         $userId = Auth::id();
         $date = now()->toDateString();
+        $user = DB::table('users')->where([
+            'id' => $userId,
+        ])->first();
+
         $endTime = now()->toTimeString();
-        
-        DB::table('attendances')
-        ->where('user_id', $userId)
-            ->where('date', $date)
-            ->update(['end_time' => $endTime, 'updated_at' => now()]);
+
+        DB::table('attendances')->where(['user_id' => $user->id, 'end_time' => null])
+        ->update([
+            'end_time' => $endTime,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
 
         $userName = Auth::user()->name;
         $message = '退勤が登録されました';

@@ -1,0 +1,23 @@
+.date-content {
+    margin: 50px 10px;
+}
+
+.date-table {
+    margin: 0 auto;
+    width: 80%;
+    text-align: left;
+    border-collapse: collapse;
+    border-top: 1px solid #606060;
+    border-bottom: 1px solid #606060;
+}
+
+.date-table th {
+    padding: 20px;
+}
+
+.date-table__item {
+    border-collapse: collapse;
+    border-top: 1px solid #606060;
+    border-bottom: 1px solid #606060;
+    padding: 20px;
+}

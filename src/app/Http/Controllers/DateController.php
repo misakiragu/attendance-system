@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Attendance;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Carbon\CarbonInterval;
 
 class DateController extends Controller
 {
@@ -54,13 +55,34 @@ class DateController extends Controller
             'attendances.start_time',
             'attendances.end_time',
             // 集計（asは別名で定義）
-            DB::raw('SUM(TIMESTAMPDIFF(SECOND, breaks.break_start_time, breaks.break_end_time)) as total_break_time')
+            DB::raw('SUM(TIMESTAMPDIFF(SECOND, breaks.break_start_time, breaks.break_end_time)) as total_break_time'),
+            DB::raw('SUM(TIMESTAMPDIFF(SECOND, start_time, end_time)) as total_attendance_time')
         )
         ->groupBy('users.name', 'attendances.start_time', 'attendances.end_time')
         ->get();
 
-        return view('date')
-            ->with('results', $results);
+        // 結果の配列を処理して、時間に変換する
+        foreach ($results as $result) {
+            // 秒数をCarbonIntervalオブジェクトに変換し、文字列としてフォーマットする
+            $break_seconds = $result->total_break_time;
+            $attendance_seconds = $result->total_attendance_time;
+
+            // total_attendance_time から total_break_time を引く
+            $work_seconds = $attendance_seconds - $break_seconds;
+
+            // 新しい CarbonInterval オブジェクトを作成して、文字列としてフォーマットする
+            $result->total_break_time = CarbonInterval::seconds($result->total_break_time)->cascade()->format('%H:%I:%S');
+
+            $total_work_interval = CarbonInterval::seconds($work_seconds)->cascade();
+            $result->total_work_time = $total_work_interval->format('%H:%I:%S');
+        }
+
+        $today =
+        now()->toDateString();
+
+        //return view('date')
+            //->with('results', $results);
+        return view('date', compact('results', 'today'));
     }
 }
 

@@ -16,11 +16,17 @@ class BreakController extends Controller
 
     public function breakStart(Request $request)
     {
-        $attendanceId = Auth::id();
+        $userId = Auth::id();
+        $date = now()->toDateString();
+        $attendance = DB::table('attendances')->where([
+            'user_id' => $userId,
+            'date' => $date
+        ])->first();
+
         $startTime = now()->toTimeString();
 
         DB::table('breaks')->insert([
-            'attendance_id' => $attendanceId,
+            'attendance_id' => $attendance->id,
             'break_start_time' => $startTime,
             'created_at' => now(),
             'updated_at' => now()
@@ -34,11 +40,17 @@ class BreakController extends Controller
 
     public function breakEnd(Request $request)
     {
-        $attendanceId = Auth::id();
+        $userId = Auth::id();
+        $date = now()->toDateString();
+        $attendance = DB::table('attendances')->where([
+            'user_id' => $userId,
+            'date' => $date
+        ])->first();
+
         $endTime = now()->toTimeString();
 
-        DB::table('breaks')->insert([
-            'attendance_id' => $attendanceId,
+        DB::table('breaks')->where(['attendance_id'=> $attendance->id, 'break_end_time'=>null])
+        ->update([
             'break_end_time' => $endTime,
             'created_at' => now(),
             'updated_at' => now()

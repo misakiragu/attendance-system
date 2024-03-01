@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/login.css') }}">
+<link rel="stylesheet" href="{{ asset('css/date.css') }}">
 @endsection
 
 @section('content')
-<div class="attendance__content">
-    <table class="date-table__inner">
+
+<div class="date-content">
+    <p>{{ $today }}</p>
+    <table class="date-table">
         <tr>
             <th>名前</th>
             <th>勤務開始</th>
@@ -27,6 +29,9 @@
             </td>
             <td class="date-table__item">
                 {{ $results->total_break_time }}
+            </td>
+            <td class="date-table__item">
+                {{ $results->total_work_time }}
             </td>
         </tr>
         @endforeach
