@@ -6,8 +6,14 @@
 
 @section('content')
 
+<div class="date-day">
+    <a href="{{ route('date.show', ['date' => $previousDate]) }}" class="arrow-left">&lt;</a>
+    <p class="date-today">{{ $date }}</p>
+    <a href="{{ route('date.show', ['date' => $nextDate]) }}" class="arrow-right">&gt;</a>
+</div>
+
+
 <div class="date-content">
-    <p>{{ $today }}</p>
     <table class="date-table">
         <tr>
             <th>名前</th>
@@ -16,24 +22,26 @@
             <th>休憩時間</th>
             <th>勤務時間</th>
         </tr>
-        @foreach ($results as $results)
+        @foreach ($results as $result)
+        @if ($result->date == $date)
         <tr>
             <td class="date-table__item">
-                {{ $results->name }}
+                {{ $result->name }}
             </td>
             <td class="date-table__item">
-                {{ $results->start_time }}
+                {{ $result->start_time }}
             </td>
             <td class="date-table__item">
-                {{ $results->end_time }}
+                {{ $result->end_time }}
             </td>
             <td class="date-table__item">
-                {{ $results->total_break_time }}
+                {{ $result->total_break_time }}
             </td>
             <td class="date-table__item">
-                {{ $results->total_work_time }}
+                {{ $result->total_work_time }}
             </td>
         </tr>
+        @endif
         @endforeach
     </table>
 </div>

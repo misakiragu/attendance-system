@@ -1,3 +1,23 @@
+.date-day {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    font-size: large;
+}
+
+.date-day a {
+    text-decoration: none;
+    margin: 15px 10px;
+    border: solid 2px rgba(82, 82, 143, 0.493);
+    font-size: 30px;
+    color: rgba(82, 82, 143, 0.493);
+    display: inline-block;
+    width: 50px;
+    height: 30px;
+    line-height: 20px;
+    text-align: center;
+}
+
 .date-content {
     margin: 50px 10px;
 }

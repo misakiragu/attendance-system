@@ -10,37 +10,18 @@ use Carbon\CarbonInterval;
 
 class DateController extends Controller
 {
-
-    public function calculateDuration($start, $end)
+    public function getWorkData($date = null)
     {
-        $startTime = Carbon::parse($start);
-        $endTime = Carbon::parse($end);
+        // 引数がない場合は今日の日付を使用
+        if (is_null($date)) {
+            $date = now()->toDateString();
+        }
 
-        return $startTime->diff($endTime);
-    }
+        // 1日前の日付を取得
+        $previousDate = Carbon::parse($date)->subDay()->toDateString();
 
-    public function calculateBreakTime($start, $end, $breakStart, $breakEnd)
-    {
-        $startTime = Carbon::parse($start);
-        $endTime = Carbon::parse($end);
-        $breakStartTime = Carbon::parse($breakStart);
-        $breakEndTime = Carbon::parse($breakEnd);
-
-        // 休憩時間を取り除く
-        $workDuration = $startTime->diff($endTime);
-        $breakDuration = $breakStartTime->diff($breakEndTime);
-        // 休憩時間を取り除く
-        $netWorkDuration = $startTime->copy()->add($workDuration)->sub($breakDuration);
-
-        return $netWorkDuration;
-    }
-
-    public function getWorkData()
-    {
-        // 現在の日付を取得
-        $today = Carbon::now()->toDateString();
-
-        $date = now()->toDateString();
+        // 1日後の日付を取得
+        $nextDate = Carbon::parse($date)->addDay()->toDateString();
 
         // 指定された日付のデータのみを取得
         $attendances = Attendance::with('user')->whereDate('date', $date)->get();
@@ -54,11 +35,12 @@ class DateController extends Controller
             'users.name',
             'attendances.start_time',
             'attendances.end_time',
+            'attendances.date',
             // 集計（asは別名で定義）
             DB::raw('SUM(TIMESTAMPDIFF(SECOND, breaks.break_start_time, breaks.break_end_time)) as total_break_time'),
             DB::raw('SUM(TIMESTAMPDIFF(SECOND, start_time, end_time)) as total_attendance_time')
         )
-        ->groupBy('users.name', 'attendances.start_time', 'attendances.end_time')
+        ->groupBy('users.name', 'attendances.start_time', 'attendances.end_time','attendances.date')
         ->get();
 
         // 結果の配列を処理して、時間に変換する
@@ -77,12 +59,8 @@ class DateController extends Controller
             $result->total_work_time = $total_work_interval->format('%H:%I:%S');
         }
 
-        $today =
-        now()->toDateString();
-
-        //return view('date')
-            //->with('results', $results);
-        return view('date', compact('results', 'today'));
+        return view('date', compact('results', 'date','previousDate','nextDate'));
     }
+
 }
 
