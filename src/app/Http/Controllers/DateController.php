@@ -7,6 +7,7 @@ use App\Models\Attendance;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Carbon\CarbonInterval;
+use Illuminate\Pagination\Paginator;
 
 class DateController extends Controller
 {
@@ -23,25 +24,27 @@ class DateController extends Controller
         // 1日後の日付を取得
         $nextDate = Carbon::parse($date)->addDay()->toDateString();
 
-        // 指定された日付のデータのみを取得
-        $attendances = Attendance::with('user')->whereDate('date', $date)->get();
+        // 指定された日付のデータのみを取得し、1ページあたり5件表示する
+        $attendances = Attendance::with('user')
+            ->whereDate('date', $date)
+            ->paginate(5);
 
         // テーブルの結合
         $results = DB::table('attendances')
-        ->join('users', 'attendances.user_id', '=', 'users.id')
-        ->join('breaks', 'breaks.attendance_id', '=', 'attendances.id')
-        // 返すカラムを指定（テーブル名.カラム名）
-        ->select(
-            'users.name',
-            'attendances.start_time',
-            'attendances.end_time',
-            'attendances.date',
-            // 集計（asは別名で定義）
-            DB::raw('SUM(TIMESTAMPDIFF(SECOND, breaks.break_start_time, breaks.break_end_time)) as total_break_time'),
-            DB::raw('SUM(TIMESTAMPDIFF(SECOND, start_time, end_time)) as total_attendance_time')
-        )
-        ->groupBy('users.name', 'attendances.start_time', 'attendances.end_time','attendances.date')
-        ->get();
+            ->join('users', 'attendances.user_id', '=', 'users.id')
+            ->join('breaks', 'breaks.attendance_id', '=', 'attendances.id')
+            // 返すカラムを指定（テーブル名.カラム名）
+            ->select(
+                'users.name',
+                'attendances.start_time',
+                'attendances.end_time',
+                'attendances.date',
+                // 集計（asは別名で定義）
+                DB::raw('SUM(TIMESTAMPDIFF(SECOND, breaks.break_start_time, breaks.break_end_time)) as total_break_time'),
+                DB::raw('SUM(TIMESTAMPDIFF(SECOND, start_time, end_time)) as total_attendance_time')
+            )
+            ->groupBy('users.name', 'attendances.start_time', 'attendances.end_time', 'attendances.date')
+            ->get();
 
         // 結果の配列を処理して、時間に変換する
         foreach ($results as $result) {
@@ -59,8 +62,6 @@ class DateController extends Controller
             $result->total_work_time = $total_work_interval->format('%H:%I:%S');
         }
 
-        return view('date', compact('results', 'date','previousDate','nextDate'));
+        return view('date', compact('results', 'date', 'previousDate', 'nextDate', 'attendances'));
     }
-
 }
-

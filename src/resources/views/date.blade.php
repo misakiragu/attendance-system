@@ -44,5 +44,8 @@
         @endif
         @endforeach
     </table>
+    <div class="pagination">
+        {{ $attendances->links() }}
+    </div>
 </div>
 @endsection
