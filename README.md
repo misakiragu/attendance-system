@@ -1,5 +1,6 @@
 # Atte（アット）
 ある企業の勤怠管理システム
+<img width="858" alt="スクリーンショット 2024-03-29 21 06 14" src="https://github.com/misakiragu/attendance-system/assets/141226793/cc9e20a0-18e5-4b7e-bd3b-2d58006428ac">
 
 ## 作成した目的
 人事評価のため
