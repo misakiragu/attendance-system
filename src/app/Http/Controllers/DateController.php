@@ -44,7 +44,7 @@ class DateController extends Controller
                 DB::raw('SUM(TIMESTAMPDIFF(SECOND, start_time, end_time)) as total_attendance_time')
             )
             ->groupBy('users.name', 'attendances.start_time', 'attendances.end_time', 'attendances.date')
-            ->get();
+            ->paginate(5);
 
         // 結果の配列を処理して、時間に変換する
         foreach ($results as $result) {
