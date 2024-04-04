@@ -24,15 +24,11 @@ class DateController extends Controller
         // 1日後の日付を取得
         $nextDate = Carbon::parse($date)->addDay()->toDateString();
 
-        // 指定された日付のデータのみを取得し、1ページあたり5件表示する
-        $attendances = Attendance::with('user')
-            ->whereDate('date', $date)
-            ->paginate(5);
-
         // テーブルの結合
         $results = DB::table('attendances')
             ->join('users', 'attendances.user_id', '=', 'users.id')
             ->join('breaks', 'breaks.attendance_id', '=', 'attendances.id')
+            ->whereDate('attendances.date', $date)
             // 返すカラムを指定（テーブル名.カラム名）
             ->select(
                 'users.name',
@@ -44,7 +40,7 @@ class DateController extends Controller
                 DB::raw('SUM(TIMESTAMPDIFF(SECOND, start_time, end_time)) as total_attendance_time')
             )
             ->groupBy('users.name', 'attendances.start_time', 'attendances.end_time', 'attendances.date')
-            ->get();
+            ->paginate(5);
 
         // 結果の配列を処理して、時間に変換する
         foreach ($results as $result) {
@@ -62,6 +58,6 @@ class DateController extends Controller
             $result->total_work_time = $total_work_interval->format('%H:%I:%S');
         }
 
-        return view('date', compact('results', 'date', 'previousDate', 'nextDate', 'attendances'));
+        return view('date', compact('results', 'date', 'previousDate', 'nextDate'));
     }
 }
