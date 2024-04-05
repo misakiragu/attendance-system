@@ -28,10 +28,12 @@ Laravel8
 mysql:8.0.26
 
 ## テーブル設計
+<img width="494" alt="スクリーンショット 2024-04-05 6 52 52" src="https://github.com/misakiragu/attendance-system/assets/141226793/0528da3a-dce1-4a06-a845-691a1cbf9262">
 
 ## ER図
+<img width="421" alt="スクリーンショット 2024-04-05 6 55 51" src="https://github.com/misakiragu/attendance-system/assets/141226793/8d5c23bb-bee8-4485-8be5-0513f2ad0c6a">
 
-# 環境構築
+
 
 
 
